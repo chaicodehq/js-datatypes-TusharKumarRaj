@@ -29,4 +29,26 @@
  */
 export function formatChaiMenu(items) {
   // Your code here
+//   * Rules:
+//  *   - items ek array hai of objects: [{ name: "masala chai", price: 15 }, ...]
+//  *   - Har item ka naam toUpperCase() karo
+//  *   - Format: "NAAM - Rs.PRICE" (e.g., "MASALA CHAI - Rs.15")
+//  *   - Saare formatted items ko " | " se join karo
+//  *   - Items jinka price 0 ya negative hai, unhe skip karo (filter out)
+//  *   - Items jinka naam empty string hai ya string nahi hai, unhe bhi skip karo
+//  *   - Hint: Use Array.isArray(), filter(), map(), join(), toUpperCase()
+//  *
+//  * Validation:
+//  *   - Agar items array nahi hai ya empty hai, return ""
+
+    if(!Array.isArray(items) || items.length === 0)
+      return ""
+
+    items = items.filter(e => (e.price>0 && e.name!==""))
+
+    items = items.map(e=> `${e.name.toUpperCase()} - Rs.${e.price}`)
+
+    let ans = items.join(" | ")
+
+    return ans;
 }

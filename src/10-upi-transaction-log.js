@@ -48,4 +48,59 @@
  */
 export function analyzeUPITransactions(transactions) {
   // Your code here
+  if(!Array.isArray(transactions) || transactions.length === 0)
+    return null
+     
+     transactions = transactions.filter(e=>e.amount > 0 && (e.type.toLowerCase() === "credit" || e.type.toLowerCase() === "debit"))
+
+     if(transactions.length === 0)
+      return null    
+
+     let creditObjects = transactions.filter(e => (e.type === "credit"))
+     let debitObjects = transactions.filter(e => (e.type === "debit"))
+
+     let totalCredit = creditObjects.reduce( (sum,e) => sum+e.amount, 0)
+     let totalDebit = debitObjects.reduce((sum,e) => sum+e.amount, 0)
+
+     let netBalance = totalCredit - totalDebit
+     let transactionCount = transactions.length
+
+     let totalAmount = transactions.reduce((sum,e) => sum + e.amount,0)
+     let avgTransaction = Math.round(totalAmount/transactionCount)
+     
+     let highestTransaction
+     let maxtransaction = 0;
+     transactions.forEach(e=>{
+        if(e.amount > maxtransaction)
+        {
+          maxtransaction = e.amount
+          highestTransaction = e;
+        }
+     });
+
+     let categoryBreakdown = transactions.reduce((cat, e) => {
+      cat[e.category] = (cat[e.category] || 0) + e.amount;
+      return cat }, {});
+
+      let frequentContactMap = {};
+
+     let frequentContact = transactions.reduce((highest,e)=>{
+         
+       frequentContactMap[e.to] = (frequentContactMap[e.to] || 0) + 1;
+         
+        if(highest === "" || frequentContactMap[e.to] > frequentContactMap[highest])
+          return e.to
+
+        return highest
+    
+        }, "")
+
+     let allAbove100 = transactions.every(e => e.amount>100)? true : false
+     let hasLargeTransaction = transactions.some(e=>e.amount>=5000)? true : false
+
+   
+     return { totalCredit, totalDebit, netBalance, transactionCount, avgTransaction, highestTransaction,
+              categoryBreakdown, frequentContact, allAbove100, hasLargeTransaction}
+
+
 }

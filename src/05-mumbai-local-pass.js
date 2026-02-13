@@ -43,4 +43,39 @@
  */
 export function generateLocalPass(passenger) {
   // Your code here
+//   Rules:
+//  *   - passenger object mein required fields: name, from, to, classType
+//  *   - classType must be "first" ya "second" (case-insensitive check)
+//  *   - Pass ID generate karo:
+//  *     classType ka first char uppercase + from ke pehle 3 letters uppercase
+//  *     + to ke pehle 3 letters uppercase
+//  *     Example: "first", "dadar", "andheri" => "F" + "DAD" + "AND" = "FDADAND"
+//  *   - Output format using template literal:
+//  *     Line 1: "MUMBAI LOCAL PASS"
+//  *     Line 2: "---"
+//  *     Line 3: "Name: <NAME IN UPPERCASE>"
+//  *     Line 4: "From: <From in Title Case>"
+//  *     Line 5: "To: <To in Title Case>"
+//  *     Line 6: "Class: <FIRST or SECOND>"
+//  *     Line 7: "Pass ID: <PASSID>"
+//  *   - Title Case = first letter uppercase, rest lowercase
+//  *   - Lines are separated by \n (newline)
+//  *   - Hint: Use template literals, slice(), toUpperCase(), toLowerCase(),
+//  *     charAt(), typeof
+
+     if(typeof passenger!=="object" || Array.isArray(passenger) || passenger === null)
+      return "INVALID PASS"
+
+      if(passenger.name===undefined || passenger.name ==="" || passenger.from===undefined || passenger.from ==="" || passenger.to===undefined || passenger.to==="" || passenger.classType===undefined || passenger.classType==="")
+        return "INVALID PASS"
+      
+      if(passenger.classType.toLowerCase()==="first" || passenger.classType.toLowerCase() === "second")
+      {
+          let PASSID = passenger.classType.charAt(0).toUpperCase() + passenger.from.slice(0,3).toUpperCase() + passenger.to.slice(0,3).toUpperCase();
+
+          return (`MUMBAI LOCAL PASS\n---\nName: ${passenger.name.toUpperCase()}\nFrom: ${passenger.from.charAt(0).toUpperCase() + passenger.from.slice(1,100).toLowerCase()}\nTo: ${passenger.to.charAt(0).toUpperCase() + passenger.to.slice(1,100).toLowerCase()}\nClass: ${passenger.classType.toUpperCase()}\nPass ID: ${PASSID}`)
+
+      }
+
+   return "INVALID PASS"
 }

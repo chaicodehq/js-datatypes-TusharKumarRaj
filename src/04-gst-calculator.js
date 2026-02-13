@@ -40,4 +40,44 @@
  */
 export function calculateGST(amount, category) {
   // Your code here
+  if(amount<=0 || !isFinite(amount))
+    return null;
+
+  if(typeof category !=="string")
+    return null;
+  
+  let gstRates = {  "essential": 0,
+                    "food": 5,
+                    "standard": 12,
+                    "electronics": 18,
+                    "luxury": 28, 
+                  }
+
+  category = category.toLowerCase();
+
+  if(!(category in gstRates))
+  return null;
+
+//    Rules:
+//  *   - Calculate: gstAmount = amount * rate / 100
+//  *   - Calculate: totalAmount = amount + gstAmount
+//  *   - Round gstAmount aur totalAmount to 2 decimal places using
+//  *     parseFloat(value.toFixed(2))
+//  *   - Return object: { baseAmount, gstRate, gstAmount, totalAmount }
+//  *   - category ko lowercase mein compare karo (case-insensitive)
+//  *   - Hint: Use toFixed(), parseFloat(), Number.isFinite(), toLowerCase()
+    
+     let gstRate = gstRates[category]
+     
+     let gstAmount = amount * gstRate/100
+     let totalAmount = amount + gstAmount
+
+     gstAmount = parseFloat(gstAmount.toFixed(2))
+     totalAmount = parseFloat(totalAmount.toFixed(2))
+     let baseAmount = amount
+
+     return {baseAmount, gstRate, gstAmount, totalAmount}
+  
+
+
 }

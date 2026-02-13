@@ -63,4 +63,87 @@
  */
 export function validateForm(formData) {
   // Your code here
+
+  let name = formData.name.trim();
+  let nameError =
+    name.length >= 2 && name.length <= 50 ? "" : "Name must be 2-50 characters";
+
+  let email = formData.email.trim();
+  let at = email.indexOf("@");
+  let emailError =
+    email.includes("@") &&
+    at === email.lastIndexOf("@") &&
+    email.indexOf(".", at) !== -1
+      ? ""
+      : "Invalid email format";
+
+  let phone = formData.phone.trim();
+  let phoneError;
+
+  if (
+    typeof phone === "string" &&
+    phone.length === 10 &&
+    (phone.charAt(0) === "6" ||
+      phone.charAt(0) === "7" ||
+      phone.charAt(0) === "8" ||
+      phone.charAt(0) === "9") &&
+    /^\d+$/.test(phone)
+  )
+    phoneError = "";
+  else phoneError = "Invalid Indian phone number";
+
+  let age = Number(formData.age);
+  let ageError = isNaN(age) || !Number.isInteger(age) || age < 16 || age > 100 ? 
+                 "Age must be an integer between 16 and 100" : "";
+
+  let pincode = formData.pincode.trim();
+  let pincodeError;
+
+  if (
+    typeof pincode === "string" &&
+    pincode.length === 6 &&
+    pincode.charAt(0) !== "0" &&
+    /^\d+$/.test(pincode)
+  )
+    pincodeError = "";
+  else pincodeError = "Invalid Indian pincode";
+
+  let state = formData.state?.trim() ?? "";
+  let stateError = state === "" ? "State is required" : "";
+
+  let agreeTerms = formData.agreeTerms;
+  let agreeTermsError = Boolean(agreeTerms) ? "" : "Must agree to terms";
+
+  let isValid = false;
+
+  if (
+    nameError === "" &&
+    emailError === "" &&
+    phoneError === "" &&
+    ageError === "" &&
+    pincodeError === "" &&
+    stateError === "" &&
+    agreeTermsError === ""
+  )
+    isValid = true;
+
+  let errors = {};
+
+  if (!isValid) {
+    if (nameError !== "") errors.name = nameError;
+
+    if (emailError !== "") errors.email = emailError;
+
+    if (phoneError !== "") errors.phone = phoneError;
+
+    if (ageError !== "") errors.age = ageError;
+
+    if (pincodeError !== "") errors.pincode = pincodeError;
+
+    if (stateError !== "") errors.state = stateError;
+
+    if (agreeTermsError !== "") errors.agreeTerms = agreeTermsError;
+  }
+
+  return { isValid, errors };
 }
